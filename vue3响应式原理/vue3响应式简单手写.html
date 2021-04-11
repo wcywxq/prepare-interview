@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>vue3响应式手写</title>
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+  <script>
+    let data = {
+      msg: "hello, world",
+      count: 10
+    };
+    let isObject = (val) => Object.prototype.toString.call(val) === "[object Object]";
+    function reactive(obj) {
+      return new Proxy(obj, {
+        get(target, propKey, receiver) {
+          const ret = Reflect.get(target, propKey, receiver);
+          console.log(`get ${propKey}:`, target[propKey]);
+          return isObject(ret) ? reactive(ret) : ret;
+        },
+        set(target, propKey, newVal, receiver) {
+          // if (target[propKey] === newVal) return;
+          // target[propKey] = newVal;
+          const ret = Reflect.set(target, propKey, newVal, receiver);
+          console.log(`set ${propKey}:`, propKey, newVal);
+          document.querySelector("#app").textContent = newVal;
+          return ret;
+        }
+      })
+    };
+    let vm = reactive(data);
+    vm.count = 20;
+    console.log(vm);
+  </script>
+</html>

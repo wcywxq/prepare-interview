@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>vue2响应式手写</title>
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+  <script>
+    let data = {
+      msg: "hello, world",
+      count: 10
+    };
+    // vue 实例
+    let vm = {};
+    // 遍历 data
+    Object.keys(data).forEach(key => {
+      // Object.defineProperty() 直接在一个对象上定义一个新属性，或修改一个对象的现有属性，并返回此对象
+      // data 中的键值对，绑定 get/set
+      Object.defineProperty(vm, key, {
+        enumerable: true,
+        configurable: true,
+        // vm.count 会触发此函数
+        get() {
+          console.log(`get ${key}:`, data[key]);
+        },
+        set(newVal) {
+          if (newVal === data[key]) return;
+          data[key] = newVal;
+          console.log(`set ${key}:`, newVal);
+          document.querySelector("#app").textContent = newVal;
+        }
+      });
+    });
+    vm.count = 10;
+    console.log(vm);
+  </script>
+</html>
