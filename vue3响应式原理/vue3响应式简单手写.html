@@ -10,11 +10,24 @@
     <div id="app"></div>
   </body>
   <script>
+    // 响应初始化 (通过初始化方法形成 proxy -> 生成渲染 effect)
+    // 1. 创建组件 -> 调用 composition-api -> 处理 options -> 得到观察者对象
+    // 2. 创建一个渲染 effect -> 设置 effect 初始化属性
+    // 3. 立即执行 effect -> 将当前渲染 effect 赋值给 avtiveEffect
+
+    // 依赖收集 (通过解析，替换 data -> 触发 get -> 通过 stack 收集依赖)
+    // 1. 执行渲染 effect -> 赋值给 activeEffect -> render
+    // 2. render -> 编译 -> 访问 data -> 触发 get
+    // 3. track 通过当前 proxy 对象 target 和 访问的属性名 propKey 找到依赖
+    // 4. 将 deps 与 activeEffect 建立联系 -> 存入 deps 数组
+
+    // 派发更新 (通过 trigger 方法(根据 value 变化，从 effect 和 computer 拿出 callback，依次执行) -> 找到依赖 deps -> 分类 computedRunners 和 effect -> 需调度则调度 )
+
     let data = {
       msg: "hello, world",
       count: 10
     };
-    let isObject = (val) => Object.prototype.toString.call(val) === "[object Object]";
+    let isObject = val => Object.prototype.toString.call(val) === "[object Object]";
     function reactive(obj) {
       return new Proxy(obj, {
         get(target, propKey, receiver) {
@@ -30,8 +43,8 @@
           document.querySelector("#app").textContent = newVal;
           return ret;
         }
-      })
-    };
+      });
+    }
     let vm = reactive(data);
     vm.count = 20;
     console.log(vm);
