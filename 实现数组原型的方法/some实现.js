@@ -14,3 +14,4 @@ var arr = [
 ];
 console.log(arr.some2(item => item.age === 22));
 console.log(arr.some2(item => item.age === 21));
+console.log(arr.some2(item => item.age >= 19));

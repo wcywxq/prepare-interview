@@ -6,6 +6,6 @@ Array.prototype.forEach2 = function (callback) {
 };
 
 var arr = [1, 2, 3, 4];
-arr.forEach2(item => {
-  console.log(item);
+arr.forEach2((item, index) => {
+  console.log(item, index);
 });

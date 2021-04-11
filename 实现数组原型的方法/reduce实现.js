@@ -17,3 +17,4 @@ var arr = [
   { name: "liliu", age: 21 }
 ];
 console.log(arr.reduce2((prev, cur) => prev + cur.age, 0));
+console.log(arr.reduce2((prev, cur) => [...prev, cur.name], []));

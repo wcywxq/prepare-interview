@@ -11,3 +11,4 @@ var arr = [
   { name: "lisi", age: 19 }
 ];
 console.log(arr.map2(item => item.name));
+console.log(arr.map2(item => item.age));

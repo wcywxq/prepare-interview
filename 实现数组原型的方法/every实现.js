@@ -14,4 +14,3 @@ var arr = [
   { name: "liliu", age: 21 }
 ];
 console.log(arr.every2(item => item.age > 17));
-console.log(arr.every2(item => item.age >= 18));
